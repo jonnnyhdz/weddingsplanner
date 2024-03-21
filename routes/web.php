@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,5 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// Rutas para el controlador de contactos
+Route::get('/mostrar-formulario', [ContactoController::class, 'mostrarFormulario'])->name('mostrar_formulario');
+Route::post('/guardar-contacto', [ContactoController::class, 'guardarContacto'])->name('guardar_contacto');
+Route::get('/mostrar-contactos', [ContactoController::class, 'mostrarContactos'])->name('mostrar_contactos');
 
 require __DIR__.'/auth.php';

@@ -2,65 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Contacto;
-use App\Http\Requests\StoreContactoRequest;
-use App\Http\Requests\UpdateContactoRequest;
 
 class ContactoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Método para mostrar el formulario y los contactos
+    public function mostrarFormulario()
     {
-        //
+        $contactos = Contacto::all(); 
+        return view('contactos', ['contactos' => $contactos]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // Método para guardar el contacto en la base de datos
+    public function guardarContacto(Request $request)
     {
-        //
+        // Validar los datos del formulario
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'telefono' => 'required|string|max:20',
+        ]);
+
+        // Crear un nuevo contacto
+        $contacto = new Contacto();
+        $contacto->nombre = $request->nombre;
+        $contacto->telefono = $request->telefono;
+        $contacto->empresa = $request->empresa;
+        $contacto->correo_electronico = $request->correo;
+        $contacto->save();
+
+        // Redireccionar a la página de mostrar contactos con un mensaje de éxito
+        return redirect()->route('mostrar_contactos')->with('success', 'Contacto agregado correctamente.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreContactoRequest $request)
+    // Método para mostrar los contactos agregados
+    public function mostrarContactos()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contacto $contacto)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Contacto $contacto)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateContactoRequest $request, Contacto $contacto)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Contacto $contacto)
-    {
-        //
+        $contactos = Contacto::all();
+        return view('contactos', ['contactos' => $contactos]);
     }
 }
